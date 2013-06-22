@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "APP Version Gem"
   s.description = "App Version Gem originally App Version Rails Plugin from https://github.com/toland/app_version"
 
-  s.files = Dir["{app,config,db,lib,tasks}/**/*"] + ["Rakefile", "README.rdoc"]
+  s.files = Dir["{app,config,db,lib,tasks}/**/*"] + ["Rakefile", "README.md"]
   s.test_files = Dir["test/**/*"] 
   
   s.add_dependency "rails", "~> 3.2.8"
