@@ -26,7 +26,7 @@ To install include in your Gemfile and execute bundler install
 
 Will then have the rake tasks below available.
 
-== Usage
+### Usage
 
 To use, simply place a file in RAILS_ROOT/config called version.yml with the
 following format:
