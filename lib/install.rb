@@ -1,9 +1,9 @@
 # copy the version.yml.erb to some user editable location for example, in lib
 
 targetTemplateDir = File.join(Rails.root.to_s, 'lib/templates')
-sourceTemplateFile = File.join(File.dirname(__FILE__), 'lib/templates/version.yml.erb')
+sourceTemplateFile = File.join(File.dirname(__FILE__), 'app_version/templates/version.yml.erb')
 
-sourceSampleFile = File.join(File.dirname(__FILE__), 'lib/templates/version.yml')
+sourceSampleFile = File.join(File.dirname(__FILE__), 'app_version/templates/version.yml')
 targetSampleDir = File.join(Rails.root.to_s, '/config')
 
 FileUtils.mkdir( targetTemplateDir, :verbose => true) unless File.exists?(targetTemplateDir)

@@ -1,8 +1,8 @@
-targetTemplateDir = File.join(RAILS_ROOT, 'lib/templates')
+targetTemplateDir = File.join(Rails.root.to_s, 'lib/templates')
 
-targetTemplateFile = File.join(RAILS_ROOT, 'lib/templates/version.yml.erb')
-targetConfigSampleFile = File.join(RAILS_ROOT, '/config/version.yml')
-targetTemplateSampleFile = File.join(RAILS_ROOT, 'lib/templates/version.yml')
+targetTemplateFile = File.join(Rails.root.to_s, 'lib/templates/version.yml.erb')
+targetConfigSampleFile = File.join(Rails.root.to_s, '/config/version.yml')
+targetTemplateSampleFile = File.join(Rails.root.to_s, 'lib/templates/version.yml')
 
 if File.exist?(targetTemplateFile)          then FileUtils.rm( targetTemplateFile, :verbose => true) end
 if File.exist?(targetConfigSampleFile)      then FileUtils.rm( targetConfigSampleFile, :verbose => true) end

@@ -9,12 +9,12 @@ namespace :app do
 
   desc 'Configure for initial install.'
   task :install do
-    require File.join(File.dirname(__FILE__), "../../install.rb")
+    require File.join(File.dirname(__FILE__), "../install.rb")
   end
 
   desc 'Clean up prior to removal.'
   task :uninstall do
-    require File.join(File.dirname(__FILE__), "../../uninstall.rb")
+    require File.join(File.dirname(__FILE__), "../uninstall.rb")
   end
 
   desc 'Render the version.yml from its template.'
