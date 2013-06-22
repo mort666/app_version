@@ -1,4 +1,4 @@
-= App Version
+## App Version
 
 This is a simple plugin that makes it easy to manage the version number of your
 Rails application. The version numbers supported by this plugin look like
@@ -6,37 +6,39 @@ Rails application. The version numbers supported by this plugin look like
 
 The components of the version number are:
 
-  2          => major
-  0          => minor
-  1          => patch
-  M4         => milestone
-  (600)      => build number (usually Subversion revision)
-  branch     => the name of the branch this version is from.
-  coder      => the name of the user that made the release
-  2008-10-27 => the date of the release
+  	2          => major
+  	0          => minor
+  	1          => patch
+  	M4         => milestone
+  	(600)      => build number (usually Subversion revision)
+ 	branch     => the name of the branch this version is from.
+ 	coder      => the name of the user that made the release
+  	2008-10-27 => the date of the release
 
 Only the major and minor numbers are required. The rest can be omitted and the
 plugin will attempt to do the right thing.
 
-== Install
+### Install
 
-To install this plugin from gitHub run the following command:
+To install include in your Gemfile and execute bundler install
 
-./script/plugin install git://github.com/toland/app_version.git
+	gem 'app_version'
+
+Will then have the rake tasks below available.
 
 == Usage
 
 To use, simply place a file in RAILS_ROOT/config called version.yml with the
 following format:
 
-  major:     2
-  minor:     0
-  patch:     1
-  milestone: 4
-  build:     git-revcount
-  branch:    master
-  committer: coder
-  build_date: 2008-10-27
+  	major:     2
+  	minor:     0
+  	patch:     1
+  	milestone: 4
+  	build:     git-revcount
+  	branch:    master
+  	committer: coder
+  	build_date: 2008-10-27
 
 If the milestone or patch fields are less than 0 then they will not show up
 in the version string. The build field can be a build number or one of the
@@ -59,7 +61,7 @@ properly formatted version number. APP_VERSION also has +major+, +minor+,
 +patch+, +milestone+, +build+, +branch+, +committer+, and +build_date+
 methods to retrieve the individual components of the version number.
 
-== Capistrano Usage
+### Capistrano Usage
 
 When the app_version plugin is installed, it copies a templated edition of the
 version.yml file into /lib/templates/version.yml.erb, the initial file shows a
@@ -75,23 +77,25 @@ Both the standard and extended capistrano usage can co-exist in the same project
 the dynamic rendering of the version.yml only happens when using capistrano to
 deploy your app.
 
-== Rake tasks
+**Not Confirmed working in this version**
+
+### Rake tasks
 
 This plugin includes 4 new rake tasks:
 
-rake app:install    - will copy the version.yml and version.yml.erb into more user
-                      accessible locations (/config, and /lib/templates)
+	rake app:install    - will copy the version.yml and version.yml.erb into more user
+  	                    accessible locations (/config, and /lib/templates)
 
-rake app:uninstall  - will remove the files copied in the install task
+	rake app:uninstall  - will remove the files copied in the install task
 
-rake app:render     - will render the erb template into /config/version.yml
-                      in case you want to have dynamic values updated via a rake task.
-                      Note: certain examples expect the app to be in a git working directory.
+	rake app:render     - will render the erb template into /config/version.yml
+    	                  in case you want to have dynamic values updated via a rake task.
+        	              Note: certain examples expect the app to be in a git working directory.
 
-rake app:version    - will output the version number of the current rails
-                      application.
+	rake app:version    - will output the version number of the current rails
+                    	  application.
 
-= License
+## License
 
 This plugin is released under the terms of the Ruby license. See
 http://www.ruby-lang.org/en/LICENSE.txt.
