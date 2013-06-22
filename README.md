@@ -1,8 +1,6 @@
 ## App Version
 
-This is a simple plugin that makes it easy to manage the version number of your
-Rails application. The version numbers supported by this plugin look like
-'2.0.1 M4 (600) of branch by coder on 2008-10-27'.
+This is a simple plugin that makes it easy to manage the version number of your Rails application. The version numbers supported by this plugin look like '2.0.1 M4 (600) of branch by coder on 2008-10-27'.
 
 The components of the version number are:
 
@@ -15,8 +13,7 @@ The components of the version number are:
  	coder      => the name of the user that made the release
   	2008-10-27 => the date of the release
 
-Only the major and minor numbers are required. The rest can be omitted and the
-plugin will attempt to do the right thing.
+Only the major and minor numbers are required. The rest can be omitted and the plugin will attempt to do the right thing.
 
 ### Install
 
@@ -25,6 +22,18 @@ To install include in your Gemfile and execute bundler install
 	gem 'app_version'
 
 Will then have the rake tasks below available.
+
+To include the version information into your running application create an initialiser within the config directory of the rails application that includes.
+
+	if defined?(Rails.root.to_s) && File.exists?("#{(Rails.root.to_s)}/config/version.yml")
+  		APP_VERSION = App::Version.load "#{(Rails.root.to_s)}/config/version.yml"
+	end
+
+This will load a constant called APP_VERSION That includes the version information. This can then be rendered within the application using
+
+	APP_VERSION.to_s
+	
+Use this within your application view or helper methods, more detail on other version meta data in the usage section.
 
 ### Usage
 
@@ -40,42 +49,23 @@ following format:
   	committer: coder
   	build_date: 2008-10-27
 
-If the milestone or patch fields are less than 0 then they will not show up
-in the version string. The build field can be a build number or one of the
-following strings: svn, git-hash or git-revcount. If it is a number then that
-number will be used as the build number, if it is one of the special strings
-then the plugin will attempt to query the source control system for the build
-number. The build date field can be a date or the following string: git-revdate.
-If you use the special string it will query the source control system and output 
-in YYYY-MM-DD format the commit date of the last revision.
+If the milestone or patch fields are less than 0 then they will not show up in the version string. The build field can be a build number or one of the following strings: svn, git-hash or git-revcount. If it is a number then that number will be used as the build number, if it is one of the special strings then the plugin will attempt to query the source control system for the build number. The build date field can be a date or the following string: git-revdate.
 
-Using 'svn' for the build number will cause the plugin to query Subversion for
-the current revision number. Since Git doesn't have a numbered revision we have
-to fake it. 'git-revcount' will count the number of commits to the repository
-and use that as the build number whereas 'git-hash' will use the first 6 digits
-of the current HEAD's hash.
+If you use the special string it will query the source control system and output in YYYY-MM-DD format the commit date of the last revision.
 
-The plugin creates a constant APP_VERSION that contains the version number of
-the application. Calling the +to_s+ method on APP_VERSION will result in a
-properly formatted version number. APP_VERSION also has +major+, +minor+,
-+patch+, +milestone+, +build+, +branch+, +committer+, and +build_date+
-methods to retrieve the individual components of the version number.
+Using 'svn' for the build number will cause the plugin to query Subversion for the current revision number. Since Git doesn't have a numbered revision we have to fake it. 'git-revcount' will count the number of commits to the repository and use that as the build number whereas 'git-hash' will use the first 6 digits of the current HEAD's hash.
+
+The plugin creates a constant `APP_VERSION` that contains the version number of the application. Calling the `to_s` method on APP_VERSION will result in a properly formatted version number. 
+
+APP_VERSION also has `major`, `minor`, `patch`, `milestone`, `build`, `branch`, `committer`, and `build_date` methods to retrieve the individual components of the version number.
 
 ### Capistrano Usage
 
-When the app_version plugin is installed, it copies a templated edition of the
-version.yml file into /lib/templates/version.yml.erb, the initial file shows a
-tag for retrieving the revision count with git. It also shows displaying the
-branch as specified with "set :branch" in your capistrano deploy.rb, see the
-comments in the erb file for more nifty tricks.
+When the app_version plugin is installed, it copies a templated edition of the version.yml file into /lib/templates/version.yml.erb, the initial file shows a tag for retrieving the revision count with git. It also shows displaying the branch as specified with "set :branch" in your capistrano deploy.rb, see the comments in the erb file for more nifty tricks.
 
-When you do a cap deploy, there is a capistrano recipe built-in to the app_version
-plugin, which will render the templated version.yml into the standard location as
-mentioned above. This happens automatically after the deploy is done.
+When you do a cap deploy, there is a capistrano recipe built-in to the app_version plugin, which will render the templated version.yml into the standard location as mentioned above. This happens automatically after the deploy is done.
 
-Both the standard and extended capistrano usage can co-exist in the same project
-the dynamic rendering of the version.yml only happens when using capistrano to
-deploy your app.
+Both the standard and extended capistrano usage can co-exist in the same project the dynamic rendering of the version.yml only happens when using capistrano to deploy your app.
 
 **Not Confirmed working in this version**
 
