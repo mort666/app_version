@@ -1,5 +1,7 @@
 ## App Version
 
+[![Build Status](https://travis-ci.org/mort666/app_version.png?branch=master)](https://travis-ci.org/mort666/app_version)
+
 This is a simple plugin that makes it easy to manage the version number of your Rails application. The version numbers supported by this plugin look like '2.0.1 M4 (600) of branch by coder on 2008-10-27'.
 
 The components of the version number are:
