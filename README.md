@@ -2,13 +2,14 @@
 
 [![Build Status](https://travis-ci.org/mort666/app_version.png?branch=master)](https://travis-ci.org/mort666/app_version)
 
-This is a simple plugin that makes it easy to manage the version number of your Rails application. The version numbers supported by this plugin look like '2.0.1 M4 (600) of branch by coder on 2008-10-27'.
+This is a simple plugin that makes it easy to manage the version number of your Rails application. The version numbers supported by this plugin look like '2.0.0-rc.1 M4 (600) of branch by coder on 2008-10-27'.
 
 The components of the version number are:
 
   	2          => major
   	0          => minor
-  	1          => patch
+  	0          => patch
+    rc.1       => meta information (as defined by Semantic Versioning)
   	M4         => milestone
   	(600)      => build number (usually Subversion revision)
  	branch     => the name of the branch this version is from.
@@ -45,6 +46,7 @@ following format:
   	major:     2
   	minor:     0
   	patch:     1
+    meta:      rc.1
   	milestone: 4
   	build:     git-revcount
   	branch:    master
@@ -59,7 +61,7 @@ Using 'svn' for the build number will cause the plugin to query Subversion for t
 
 The plugin creates a constant `APP_VERSION` that contains the version number of the application. Calling the `to_s` method on APP_VERSION will result in a properly formatted version number. 
 
-APP_VERSION also has `major`, `minor`, `patch`, `milestone`, `build`, `branch`, `committer`, and `build_date` methods to retrieve the individual components of the version number.
+APP_VERSION also has `major`, `minor`, `patch`, `meta`, `milestone`, `build`,`branch`, `committer`, and `build_date` methods to retrieve the individual components of the version number.
 
 ### Capistrano Usage
 

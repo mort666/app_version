@@ -1,14 +1,15 @@
-require 'test/unit'
+require 'minitest/autorun'
 require 'active_support'
 require 'app_version'
 
-class AppVersionTest < Test::Unit::TestCase
+class AppVersionTest < MiniTest::Unit::TestCase
 
   def setup
     @version = App::Version.new
     @version.major = '1'
     @version.minor = '2'
     @version.patch = '3'
+    @version.meta = 'rc.1'
     @version.milestone = '4'
     @version.build = '500'
     @version.branch = 'master'
@@ -22,16 +23,16 @@ class AppVersionTest < Test::Unit::TestCase
   end
 
   def test_create_from_string
-    version = App::Version.parse '1.2.3 M4 (500) of master by coder on 2008-10-27'
+    version = App::Version.parse '1.2.3-rc.1 M4 (500) of master by coder on 2008-10-27'
     assert_equal @version, version
 
-    version = App::Version.parse '1.2.3 M4 (500)'
+    version = App::Version.parse '1.2.3-rc.1 M4 (500)'
     @version.branch = nil
     @version.committer = nil
     @version.build_date = nil
     assert_equal @version, version
 
-    version = App::Version.parse '1.2.3 (500)'
+    version = App::Version.parse '1.2.3-rc.1 (500)'
     @version.milestone = nil
     @version.branch = nil
     @version.committer = nil
@@ -40,6 +41,7 @@ class AppVersionTest < Test::Unit::TestCase
 
     version = App::Version.parse '1.2 (500)'
     @version.patch = nil
+    @version.meta = nil
     @version.branch = nil
     @version.committer = nil
     @version.build_date = nil
@@ -48,6 +50,7 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.parse '1.2'
     @version.milestone = nil
     @version.build = nil
+    @version.meta = nil
     @version.branch = nil
     @version.committer = nil
     @version.build_date = nil
@@ -55,6 +58,7 @@ class AppVersionTest < Test::Unit::TestCase
 
     version = App::Version.parse '1.2.1'
     @version.patch = 1
+    @version.meta = nil
     @version.branch = nil
     @version.committer = nil
     @version.build_date = nil
@@ -68,6 +72,7 @@ class AppVersionTest < Test::Unit::TestCase
     @version.build = 6
     @version.branch = 'branch'
     @version.committer = 'coder'
+    @version.meta = nil
     @version.build_date = Date.civil(2008, 10, 31)
     assert_raises(ArgumentError) { App::Version.parse 'This is not a valid version' }
   end
@@ -76,6 +81,7 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.new  :major => 1,
                               :minor => 2,
                               :patch => 3,
+                              :meta => "rc.1",
                               :milestone => 4,
                               :build => 500,
                               :branch => 'master',
@@ -88,6 +94,7 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.new  'major' => 1,
                               'minor' => 2,
                               'patch' => 3,
+                              'meta' => "rc.1",
                               'milestone' => 4,
                               'build' => 500,
                               'branch' => 'master',
@@ -100,6 +107,7 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.new  :major => '1',
                               :minor => '2',
                               :patch => '3',
+                              :meta => 'rc.1',
                               :milestone => '4',
                               :build => '500',
                               :branch => 'master',
@@ -112,6 +120,7 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.new  'major' => '1',
                               'minor' => '2',
                               'patch' => '3',
+                              'meta' => 'rc.1',
                               'milestone' => '4',
                               'build' => '500',
                               'branch' => 'master',
@@ -125,12 +134,13 @@ class AppVersionTest < Test::Unit::TestCase
     version = App::Version.new  :major => '1',
                               :minor => '2',
                               :patch => '3',
+                              :meta => 'rc.1',
                               :milestone => '4',
                               :build => '500',
                               :branch => 'master',
                               :committer => 'coder',
                               :build_date => '12wtf34'
-    assert_not_equal @version, version
+    assert @version != version
   end
 
   def test_should_raise_when_major_is_missing
@@ -152,6 +162,7 @@ class AppVersionTest < Test::Unit::TestCase
     @version.milestone = nil
     @version.build = nil
     @version.branch = nil
+    @version.meta = nil
     @version.committer = nil
     @version.build_date = nil
     assert_equal @version, version
@@ -203,62 +214,62 @@ class AppVersionTest < Test::Unit::TestCase
   end
 
   def test_to_s
-    assert_equal '1.2.3 M4 (500) of master by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) of master by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_milestone
     @version.milestone = nil
-    assert_equal '1.2.3 (500) of master by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 (500) of master by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_build
     @version.build = nil
-    assert_equal '1.2.3 M4 of master by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 of master by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_patch
     @version.patch = nil
-    assert_equal '1.2 M4 (500) of master by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2-rc.1 M4 (500) of master by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_build_or_milestone
     @version.milestone = nil
     @version.build = nil
-    assert_equal '1.2.3 of master by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 of master by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_branch
     @version.branch = nil
-    assert_equal '1.2.3 M4 (500) by coder on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) by coder on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_committer
     @version.committer = nil
-    assert_equal '1.2.3 M4 (500) of master on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) of master on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_build_date
     @version.build_date = nil
-    assert_equal '1.2.3 M4 (500) of master by coder', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) of master by coder', @version.to_s
   end
 
   def test_to_s_with_no_branch_or_committer
     @version.branch = nil
     @version.committer = nil
-    assert_equal '1.2.3 M4 (500) on 2008-10-27', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) on 2008-10-27', @version.to_s
   end
 
   def test_to_s_with_no_committer_or_build_date
     @version.committer = nil
     @version.build_date = nil
-    assert_equal '1.2.3 M4 (500) of master', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500) of master', @version.to_s
   end
 
   def test_to_s_with_no_build_date_or_committer_or_build_date
     @version.branch = nil
     @version.committer = nil
     @version.build_date = nil
-    assert_equal '1.2.3 M4 (500)', @version.to_s
+    assert_equal '1.2.3-rc.1 M4 (500)', @version.to_s
   end
 
   def test_version_with_leading_zeros

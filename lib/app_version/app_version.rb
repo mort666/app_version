@@ -6,9 +6,9 @@ module App
   class Version
     include Comparable
 
-    attr_accessor :major, :minor, :patch, :milestone, :build, :branch, :committer, :build_date, :format
+    attr_accessor :major, :minor, :patch, :milestone, :build, :branch, :meta, :committer, :build_date, :format
 
-    [:major, :minor, :patch, :milestone, :build, :branch, :committer, :format].each do |attr|
+    [:major, :minor, :patch, :milestone, :build, :branch, :committer, :meta, :format].each do |attr|
       define_method "#{attr}=".to_sym do |value|
         instance_variable_set("@#{attr}".to_sym, value.blank? ? nil : value.to_s)
       end
@@ -29,6 +29,7 @@ module App
         @major      = args[:major].to_s
         @minor      = args[:minor].to_s
         @patch      = args[:patch].to_s     unless args[:patch].blank?
+        @meta       = args[:meta].to_s      unless args[:meta].blank?
         @milestone  = args[:milestone].to_s unless args[:milestone].blank?
         @build      = args[:build].to_s     unless args[:build].blank?
         @branch     = args[:branch].to_s    unless args[:branch].blank?
@@ -62,20 +63,21 @@ module App
 
     # Parses a version string to create an instance of the Version class.
     def self.parse(version)
-      m = version.match(/(\d+)\.(\d+)(?:\.(\d+))?(?:\sM(\d+))?(?:\s\((\d+)\))?(?:\sof\s(\w+))?(?:\sby\s(\w+))?(?:\son\s(\S+))?/)
+      m = version.match(/(\d+)\.(\d+)(?:\.(\d+))?(?:-([\w.\d]+))?(?:\sM(\d+))?(?:\s\((\d+)\))?(?:\sof\s(\w+))?(?:\sby\s(\w+))?(?:\son\s(\S+))?/)
 
       raise ArgumentError.new("The version '#{version}' is unparsable") if m.nil?
 
       version = App::Version.new :major     => m[1],
                                :minor     => m[2],
                                :patch     => m[3],
-                               :milestone => m[4],
-                               :build     => m[5],
-                               :branch    => m[6],
-                               :committer => m[7]
+                               :meta      => m[4],
+                               :milestone => m[5],
+                               :build     => m[6],
+                               :branch    => m[7],
+                               :committer => m[8]
 
-      if (m[8] && m[8] != '')
-        date = Date.parse(m[8])
+      if (m[9] && m[9] != '')
+        date = Date.parse(m[9])
         version.build_date = date
       end
 
@@ -92,7 +94,7 @@ module App
       #   return self.build <=> other.build
       # end
 
-      %w(build major minor patch milestone branch committer build_date).each do |meth|
+      %w(build major minor patch milestone branch meta committer build_date).each do |meth|
         rhs = self.send(meth) || -1
         lhs = other.send(meth) || -1
 
@@ -109,6 +111,7 @@ module App
       else
         str = "#{major}.#{minor}"
         str << ".#{patch}" unless patch.blank?
+        str << "-#{meta}" unless meta.blank?
         str << " M#{milestone}" unless milestone.blank?
         str << " (#{build})" unless build.blank?
         str << " of #{branch}" unless branch.blank?
