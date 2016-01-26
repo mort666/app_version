@@ -1,3 +1,4 @@
+
 module App
   require 'app_version/railtie' if defined?(Rails)
 end

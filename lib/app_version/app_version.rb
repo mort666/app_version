@@ -1,12 +1,30 @@
-require 'active_support/core_ext/object'  
+require 'active_support/core_ext/object'
 
 require 'yaml'
 
+#
+# App::Version Namespace
+#
 module App
+  #
+  # Application Version main class
+  #
+  # @attr [String] major Major Version number
+  # @attr [String] minor Minor Version number
+  # @attr [String] patch Patch number
+  # @attr [String] milestone Milestone information
+  # @attr [String] build Build number
+  # @attr [String] branch Git Branch information
+  # @attr [String] meta Semantic version meta info
+  # @attr [String] commiter Git Commiter information
+  # @attr [String] build_date Build Date
+  # @attr [String] format Format information
+  #
   class Version
     include Comparable
 
-    attr_accessor :major, :minor, :patch, :milestone, :build, :branch, :meta, :committer, :build_date, :format
+    attr_accessor :major, :minor, :patch, :milestone, :build
+    attr_accessor :branch, :meta, :committer, :build_date, :format
 
     [:major, :minor, :patch, :milestone, :build, :branch, :committer, :meta, :format].each do |attr|
       define_method "#{attr}=".to_sym do |value|
@@ -20,10 +38,10 @@ module App
     #   Version.new(:major => 1, :minor => 0) #=> "1.0"
     def initialize(args = nil)
       if args && args.is_a?(Hash)
-        args.keys.reject {|key| key.is_a?(Symbol) }.each {|key| args[key.to_sym] = args.delete(key) }
+        args.keys.reject { |key| key.is_a?(Symbol) }.each { |key| args[key.to_sym] = args.delete(key) }
 
         [:major, :minor].each do |param|
-          raise ArgumentError.new("The #{param.to_s} parameter is required") if args[param].blank?
+          fail ArgumentError.new("The #{param} parameter is required") if args[param].blank?
         end
 
         @major      = args[:major].to_s
@@ -38,11 +56,11 @@ module App
 
         unless args[:build_date].blank?
           b_date = case args[:build_date]
-               when 'git-revdate'
-                 get_revdate_from_git
-               else
-                 args[:build_date].to_s
-               end
+                   when 'git-revdate'
+                     get_revdate_from_git
+                   else
+                     args[:build_date].to_s
+                   end
           @build_date = Date.parse(b_date)
         end
 
@@ -62,49 +80,66 @@ module App
     end
 
     # Parses a version string to create an instance of the Version class.
+    #
+    # @param version [String] Version Number String to parse and initialize object with
+    # @raise [ArguementError] In the event string not parsable
+    # @return [App:Version] Returns populated Version object
     def self.parse(version)
       m = version.match(/(\d+)\.(\d+)(?:\.(\d+))?(?:-([\w.\d]+))?(?:\sM(\d+))?(?:\s\((\d+)\))?(?:\sof\s(\w+))?(?:\sby\s(\w+))?(?:\son\s(\S+))?/)
 
-      raise ArgumentError.new("The version '#{version}' is unparsable") if m.nil?
+      fail ArgumentError.new("The version '#{version}' is unparsable") if m.nil?
 
-      version = App::Version.new :major     => m[1],
-                               :minor     => m[2],
-                               :patch     => m[3],
-                               :meta      => m[4],
-                               :milestone => m[5],
-                               :build     => m[6],
-                               :branch    => m[7],
-                               :committer => m[8]
+      version = App::Version.new major: m[1],
+                                 minor: m[2],
+                                 patch: m[3],
+                                 meta: m[4],
+                                 milestone: m[5],
+                                 build: m[6],
+                                 branch: m[7],
+                                 committer: m[8]
 
-      if (m[9] && m[9] != '')
+      if m[9] && m[9] != ''
         date = Date.parse(m[9])
         version.build_date = date
       end
 
-      return version
+      version
     end
 
     # Loads the version information from a YAML file.
+    #
+    # @param path [String] Yaml file name to load
     def self.load(path)
-      App::Version.new YAML::load(File.open(path))
+      App::Version.new YAML.load(File.open(path))
     end
 
+    #
+    # Combined Compare operator for version
+    #
+    # @param other [App::Version] Version object to compare against
+    # @return [Integer] returns -1 if (a <=> b)
+    #
     def <=>(other)
       # if !self.build.nil? && !other.build.nil?
       #   return self.build <=> other.build
       # end
 
       %w(build major minor patch milestone branch meta committer build_date).each do |meth|
-        rhs = self.send(meth) || -1
+        rhs = send(meth) || -1
         lhs = other.send(meth) || -1
 
         ret = lhs <=> rhs
         return ret unless ret == 0
       end
 
-      return 0
+      0
     end
 
+    #
+    # Generate version string
+    #
+    # @return [String] Returns App Version string
+    #
     def to_s
       if @format
         str = eval(@format.to_s.inspect)
@@ -121,30 +156,28 @@ module App
       str
     end
 
-  private
+    private
 
     def get_build_from_subversion
-      if File.exists?(".svn")
-        #YAML.parse(`svn info`)['Revision'].value
+      if File.exist?('.svn')
+        # YAML.parse(`svn info`)['Revision'].value
         match = /(?:\d+:)?(\d+)M?S?/.match(`svnversion . -c`)
         match && match[1]
       end
     end
 
     def get_revcount_from_git
-      if File.exists?(".git")
-        `git rev-list --count HEAD`.strip
-      end
+      `git rev-list --count HEAD`.strip if File.exist?('.git')
     end
-  
+
     def get_revdate_from_git
-      if File.exists?(".git")
+      if File.exist?('.git')
         `git show --date=short --pretty=format:%cd|head -n1`.strip
       end
     end
-  
+
     def get_hash_from_git
-      if File.exists?(".git")
+      if File.exist?('.git')
         `git show --pretty=format:%H|head -n1|cut -c 1-6`.strip
       end
     end

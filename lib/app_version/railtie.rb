@@ -1,7 +1,13 @@
 require 'app_version/app_version'
-require 'rails'   
+require 'rails'
 
+#
+# Add App::Version Rake tasks
+#
 module AppVersion
+  #
+  # Add App::Version Rake tasks
+  # 
   class Railtie < Rails::Railtie
     railtie_name :app_version
 

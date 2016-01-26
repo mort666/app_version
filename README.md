@@ -35,7 +35,7 @@ To include the version information into your running application create an initi
 This will load a constant called APP_VERSION That includes the version information. This can then be rendered within the application using
 
 	APP_VERSION.to_s
-	
+
 Use this within your application view or helper methods, more detail on other version meta data in the usage section.
 
 ### Usage
@@ -59,7 +59,7 @@ If you use the special string it will query the source control system and output
 
 Using 'svn' for the build number will cause the plugin to query Subversion for the current revision number. Since Git doesn't have a numbered revision we have to fake it. 'git-revcount' will count the number of commits to the repository and use that as the build number whereas 'git-hash' will use the first 6 digits of the current HEAD's hash.
 
-The plugin creates a constant `APP_VERSION` that contains the version number of the application. Calling the `to_s` method on APP_VERSION will result in a properly formatted version number. 
+The plugin creates a constant `APP_VERSION` that contains the version number of the application. Calling the `to_s` method on APP_VERSION will result in a properly formatted version number.
 
 APP_VERSION also has `major`, `minor`, `patch`, `meta`, `milestone`, `build`,`branch`, `committer`, and `build_date` methods to retrieve the individual components of the version number.
 
