@@ -1,11 +1,6 @@
-require 'minitest/autorun'
-require 'active_support'
-require 'app_version'
+require 'test_helper'
 
-require "codeclimate-test-reporter"
-CodeClimate::TestReporter.start
-
-class AppVersionTest < MiniTest::Unit::TestCase
+class AppVersionTest < MiniTest::Test
 
   def setup
     @version = App::Version.new
