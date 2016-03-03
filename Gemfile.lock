@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_version (0.1.12)
+    app_version (0.1.14)
       rails (~> 4.2.5.2)
 
 GEM
@@ -44,7 +44,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
-    codeclimate-test-reporter (0.4.8)
+    codeclimate-test-reporter (0.5.0)
       simplecov (>= 0.7.1, < 1.0.0)
     concurrent-ruby (1.0.1)
     docile (1.1.5)
@@ -94,7 +94,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (10.5.0)
-    simplecov (0.11.1)
+    simplecov (0.11.2)
       docile (~> 1.1.0)
       json (~> 1.8)
       simplecov-html (~> 0.10.0)
