@@ -32,6 +32,7 @@ module App
       end
     end
 
+
     # Creates a new instance of the Version class using information in the passed
     # Hash to construct the version number.
     #
@@ -135,13 +136,21 @@ module App
       0
     end
 
+    def sem_ver_format
+      @@sem_ver_format =  "#{major}.#{minor}"
+      @@sem_ver_format << ".#{patch}" unless patch.blank?
+      @@sem_ver_format << "-#{meta}" unless meta.blank?
+      @@sem_ver_format << "+#{build}" unless build.blank?
+      @@sem_ver_format
+    end
+
     #
     # Generate version string
     #
     # @return [String] Returns App Version string
     #
     def to_s
-      if @format
+      if defined? @format
         str = eval(@format.to_s.inspect)
       else
         str = "#{major}.#{minor}"
