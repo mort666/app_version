@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.name        = "app_version"
   s.version     = "0.2.00"
   s.authors     = ["Scott Curry", "Stephen Kapp", "Phillip Toland"]
-  s.email       = ["coder.nhniches.com", "mort666@virus.org", "phil.toland@gmail.com"]
+  s.email       = ["coder.scottcurry.com", "mort666@virus.org", "phil.toland@gmail.com"]
   s.homepage    = "https://github.com/scurry/app_version"
   s.summary     = "Rails App Version Gem"
   s.description = "App Version Gem originally App Version Rails Plugin from https://github.com/toland/app_version, updated to run in CI server and with later rails versions as a gem, currently supports Rails 4.2.x."
