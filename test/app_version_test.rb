@@ -281,4 +281,52 @@ class AppVersionTest < MiniTest::Test
     assert_equal '4a', version.minor
     assert_equal '2010.4a', version.to_s
   end
+
+  # see http://semver.org/ for specification
+
+  def test_semver_format
+    App::Version.respond_to? :sem_ver_format
+  end
+
+  # see http://semver.org/#spec-item-2
+  def test_to_s_with_semver_format_with_no_build_or_milestone_or_meta
+    @version.milestone = nil
+    @version.build = nil
+    @version.meta = nil
+    @version.format = @version.sem_ver_format
+    assert(@version.major.to_i >= 0)
+    assert(@version.minor.to_i >= 0)
+    assert(@version.patch.to_i >= 0) if defined? @version.patch
+
+    assert_equal '1.2.3', @version.to_s
+  end
+
+  # see http://semver.org/#spec-item-9
+  def test_to_s_with_semver_format_with_no_build_or_milestone
+    @version.milestone = nil
+    @version.build = nil
+    @version.meta = 'rc.1'
+    @version.format = @version.sem_ver_format
+    assert(@version.major.to_i >= 0)
+    assert(@version.minor.to_i >= 0)
+    assert(@version.patch.to_i >= 0) if defined? @version.patch
+    assert(/[[:alnum:]\-.]*/ =~ @version.meta) if defined? @version.meta
+
+    assert_equal '1.2.3-rc.1', @version.to_s
+  end
+
+  # see http://semver.org/#spec-item-10
+  def test_to_s_with_semver_format_with_no_milestone_or_meta
+    @version.milestone = nil
+    @version.build = '20161231'
+    @version.format = @version.sem_ver_format
+    assert(@version.major.to_i >= 0)
+    assert(@version.minor.to_i >= 0)
+    assert(@version.patch.to_i >= 0) if defined? @version.patch
+    assert(/[[:alnum:]\-.]*/ =~ @version.build) if defined? @version.build
+
+    assert_equal '1.2.3-rc.1+20161231', @version.to_s
+  end
+
+
 end

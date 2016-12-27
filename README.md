@@ -63,6 +63,9 @@ The plugin creates a constant `APP_VERSION` that contains the version number of 
 
 APP_VERSION also has `major`, `minor`, `patch`, `meta`, `milestone`, `build`,`branch`, `committer`, and `build_date` methods to retrieve the individual components of the version number.
 
+There is a default format and a "semantic versioning" format to use.  The semantic versioning format follows: http://semver.org/ as guidelines.
+
+
 ### Capistrano Usage
 
 When the app_version plugin is installed, it copies a templated edition of the version.yml file into /lib/templates/version.yml.erb, the initial file shows a tag for retrieving the revision count with git. It also shows displaying the branch as specified with "set :branch" in your capistrano deploy.rb, see the comments in the erb file for more nifty tricks.
