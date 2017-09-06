@@ -16,5 +16,7 @@
 !/log/.keep
 /tmp
 
+coverage/
+
 # spec results
 rspec.xml

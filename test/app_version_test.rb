@@ -187,11 +187,11 @@ class AppVersionTest < MiniTest::Test
                               :committer => nil,
                               :build_date => nil
 
-    assert_equal nil, version.patch
-    assert_equal nil, version.milestone
-    assert_equal nil, version.branch
-    assert_equal nil, version.committer
-    assert_equal nil, version.build_date
+    assert_nil nil, version.patch
+    assert_nil nil, version.milestone
+    assert_nil nil, version.branch
+    assert_nil nil, version.committer
+    assert_nil nil, version.build_date
   end
 
   def test_create_with_empty_string
@@ -204,11 +204,11 @@ class AppVersionTest < MiniTest::Test
                               :committer => '',
                               :build_date => ''
 
-    assert_equal nil, version.patch
-    assert_equal nil, version.milestone
-    assert_equal nil, version.branch
-    assert_equal nil, version.committer
-    assert_equal nil, version.build_date
+    assert_nil nil, version.patch
+    assert_nil nil, version.milestone
+    assert_nil nil, version.branch
+    assert_nil nil, version.committer
+    assert_nil nil, version.build_date
   end
 
   def test_to_s

@@ -1,4 +1,4 @@
-source "http://rubygems.org"
+source "https://rubygems.org"
 
 # Declare your gem's dependencies in pdf_report.gemspec.
 # Bundler will treat runtime dependencies like base dependencies, and
@@ -18,4 +18,4 @@ gem "jquery-rails"
 # To use debugger
 # gem 'debugger'
 
-gem "codeclimate-test-reporter", group: :test, require: nil
+gem "simplecov", group: :test, require: false
