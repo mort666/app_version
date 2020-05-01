@@ -18,4 +18,4 @@ gem "jquery-rails"
 # To use debugger
 # gem 'debugger'
 
-gem "simplecov", group: :test, require: false
+gem "simplecov", ">= 0.16.1", group: :test, require: false
