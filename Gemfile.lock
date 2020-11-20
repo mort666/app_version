@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    app_version (0.2.4)
+    app_version (0.2.5)
       rails (~> 5.2)
 
 GEM
