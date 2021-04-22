@@ -20,3 +20,4 @@ coverage/
 
 # spec results
 rspec.xml
+Gemfile.lock
