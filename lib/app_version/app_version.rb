@@ -111,7 +111,7 @@ module App
     #
     # @param path [String] Yaml file name to load
     def self.load(path)
-      App::Version.new YAML.load(File.open(path))
+      App::Version.new YAML.load(File.open(path), permitted_classes: [Date])
     end
 
     #
